@@ -1,0 +1,11 @@
+    <div>
+        <h4>Past Unfulfilled Payment</h4>
+        
+    </div>
+
+    <router-outlet></router-outlet>
+    
+    <form [formGroup]="receivePaymentForm" (ngSubmit)="onSubmit()">
+        <input type="number" formControlName="amount" placeholder="Amount ($)">
+        <button type="submit">Create Payment Request</button>
+    </form>

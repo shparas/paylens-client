@@ -1,0 +1,25 @@
+<div *ngIf="login; then loginBlock; else registerBlock;"></div>
+
+<ng-template #loginBlock>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <input type="email" formControlName="emailOrPhone" placeholder="Email">
+        <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+
+        <input type="password" formControlName="password" placeholder="Password">
+        
+        <button (click)="login=false">Register Instead</button>
+        <button type="submit" [disabled]="!loginForm.valid">Login</button>
+    </form>
+</ng-template>
+
+<ng-template #registerBlock>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <input type="text" formControlName="firstname" placeholder="First Name">
+        <input type="text" formControlName="lastname" placeholder="Last Name">
+        <input type="email" formControlName="email" placeholder="Email">
+        <input type="phone" formControlName="phone" placeholder="Phone">
+        <input type="password" formControlName="password" placeholder="Password">
+        <button (click)="login = true">Login Instead</button>
+        <button type="submit">Register</button>
+    </form>
+</ng-template>
