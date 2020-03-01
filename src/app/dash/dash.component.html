@@ -1,1 +1,10 @@
-<h1>Hi {{currentUser.userInfo.firstname}}!</h1>
+<h1>Hi {{currentUser.userInfo.firstname}}! Click on any of the following to get started.</h1>
+<nav>
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="./balance">Balance</a>
+        <a class="nav-item nav-link" routerLink="./paid">Paid</a>
+        <a class="nav-item nav-link" routerLink="./pending">Pending</a>
+        <a class="nav-item nav-link" routerLink="./received">Received</a>
+    </div>
+</nav>
+<router-outlet></router-outlet>

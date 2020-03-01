@@ -1,11 +1,16 @@
-    <div>
-        <h4>Past Unfulfilled Payment</h4>
-        
-    </div>
-
+<div>
     <router-outlet></router-outlet>
-    
-    <form [formGroup]="receivePaymentForm" (ngSubmit)="onSubmit()">
-        <input type="number" formControlName="amount" placeholder="Amount ($)">
-        <button type="submit">Create Payment Request</button>
-    </form>
+</div>
+
+<form [formGroup]="receivePaymentForm" (ngSubmit)="onSubmit()">
+    <input type="number" formControlName="amount" placeholder="Amount ($)">
+    <input type="hidden" formControlName="rawId">
+    <button type="submit">Create Payment Request</button>
+</form>
+
+<div>
+    <h4>Past Pending Payments</h4>
+    <div *ngFor="let item of pending; let i = index">
+        {{ i }} Payment of amount ${{ item.amount }} created on {{ item.createdOn }}.
+    </div>
+</div>

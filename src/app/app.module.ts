@@ -14,6 +14,17 @@ import { SettingsComponent } from './settings/settings.component';
 import { PayComponent } from './pay/pay.component';
 import { ReceiveComponent } from './receive/receive.component';
 import { ReceivePortalComponent } from './receive/receive-portal/receive-portal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogComponent } from './_minicomponents/dialog/dialog.component';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { PaidComponent } from './dash/paid/paid.component';
+import { ReceivedComponent } from './dash/received/received.component';
+import { BalanceComponent } from './dash/balance/balance.component';
+import { PendingComponent } from './dash/pending/pending.component';
 
 @NgModule({
   declarations: [
@@ -26,13 +37,23 @@ import { ReceivePortalComponent } from './receive/receive-portal/receive-portal.
     SettingsComponent,
     PayComponent,
     ReceiveComponent,
-    ReceivePortalComponent
+    ReceivePortalComponent,
+    DialogComponent,
+    PaidComponent,
+    ReceivedComponent,
+    BalanceComponent,
+    PendingComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -18,11 +18,54 @@ export class PaymentService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  receivePayment(amount) {
-    return this.http.post<any>(`${environment.apiUrl}/receive-payment`, { amount })
-    .pipe(map(data => {
+  receivePayment(amount, rawId) {
+    return this.http.post<any>(`${environment.apiUrl}/receive-payment`, { amount, rawId })
+      .pipe(map(data => {
         return data;
-    }));
+      }));
+  }
+
+
+  makePayment(id) {
+    return this.http.post<any>(`${environment.apiUrl}/make-payment`, { id })
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
+  getPendingPayments(page = 1) {
+    return this.http.get<any>(`${environment.apiUrl}/receive-payment/pending?page=${page}`)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
+  getPaidPayments(page = 1) {
+    return this.http.get<any>(`${environment.apiUrl}/receive-payment/paid?page=${page}`)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
+  getReceivedPayments(page = 1) {
+    return this.http.get<any>(`${environment.apiUrl}/receive-payment/received?page=${page}`)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
+  getPaymentStatus(id) {
+    return this.http.get<any>(`${environment.apiUrl}/receive-payment/status?id=${id}`)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
+  getBalance() {
+    return this.http.get<any>(`${environment.apiUrl}/receive-payment/balance`)
+      .pipe(map(data => {
+        return data;
+      }));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

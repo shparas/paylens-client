@@ -1,1 +1,10 @@
-<p>receive-portal works for {{ id }}!</p>
+<h6 *ngIf="amount">
+    Requesting payment for $ {{ amount }} 
+</h6>
+<p>Payment ID: {{ id }}!</p>
+<div id="qr-show" style="width: 256px; overflow:hidden; height: 256px; border:solid blue 1px;"></div>
+
+
+<script>
+    $("#qr-show").qrcode("HELLO");
+</script>

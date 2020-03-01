@@ -1,0 +1,9 @@
+
+<div>
+    <h4>Pending</h4>
+    <button (click)="previousPage();">Previous Page</button>
+    <button (click)="nextPage();">Next Page</button>
+    <div *ngFor="let item of componentData; let i = index">
+        {{ i + 1 + (page - 1) * itemPerPage }} Payment of amount ${{ item.amount }} created on {{ item.createdOn }}.
+    </div>
+</div>

@@ -1,1 +1,36 @@
-<p>pay works!</p>
+<form [formGroup]="makePaymentForm" (ngSubmit)="onSubmit()">
+    <input type="string" formControlName="id" placeholder="id" >
+    <button type="submit">Create Payment Request</button>
+</form>
+
+<div>
+    <div class="card">
+      <mat-card>
+        <mat-card-content>
+          <div>
+            <!-- Video -->
+            <div class="video-row">
+              <video class="video" id="video" #video autoplay playsinline></video>
+            </div>
+            <!-- Canvas -->
+            <div style="display:none">
+              <canvas class="video" id="canvas" #canvas></canvas>
+            </div>
+            <!-- Button -->
+            <div class="text-center">
+              <ng-container *ngIf="!videoStart">
+                <button mat-fab class="mat-elevation-z1" (click)="toggleVideoMedia()" [disabled]="videoStart" color="primary" aria-label="videocam icon-button">
+                  <mat-icon>videocam</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="videoStart">
+                <button mat-fab (click)="toggleVideoMedia()" [disabled]="!videoStart" color="warn" aria-label="videocam icon-button">                  
+                  <mat-icon>videocam_off</mat-icon>
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

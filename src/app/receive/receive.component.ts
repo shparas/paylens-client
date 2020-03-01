@@ -12,55 +12,69 @@ import { ValidationService, AuthenticationService, UserService, AlertService, Pa
   styleUrls: ['./receive.component.less']
 })
 export class ReceiveComponent implements OnInit {
-    receivePaymentForm: any;
-    loading = false;
-    submitted = false;
+  receivePaymentForm: any;
+  loading = false;
+  submitted = false;
+  pending = [];
 
-    constructor(
-      private http: HttpClientModule,
-      private route: ActivatedRoute,
-      private router: Router,
-      private alertService: AlertService,
-      private authenticationService: AuthenticationService,
-      private userService: UserService,
-      private paymentService: PaymentService,
-      private formBuilder: FormBuilder
-    ) {}
-  
-    ngOnInit(): void {
-      this.receivePaymentForm = this.formBuilder.group({
-        amount: [0.0, [Validators.required]]
-      });
-    }
-  
-    get pF() { return this.receivePaymentForm.controls; }
-  
-    onSubmit() {
-      this.submitted = true;
-  
-      // reset alerts on submit
-      this.alertService.clear();
-  
-      // stop here if form is invalid
-      if (this.receivePaymentForm.invalid) {
-        return;
-      }
-  
-      this.loading = true;
-  
-      this.paymentService.receivePayment(this.pF.amount.value)
-        .pipe(first())
-        .subscribe(
-          data => {
-            console.log(data);
-            this.router.navigate([data.id], { relativeTo: this.route });
-          },
-          error => {
-            console.log(error);
-            this.alertService.error(error);
-            this.loading = false;
-          });
-    }
-  
-    
+  get uniqueId() {
+    return Date.now();
   }
+
+  constructor(
+    private http: HttpClientModule,
+    private route: ActivatedRoute,
+    private router: Router,
+    private alertService: AlertService,
+    private authenticationService: AuthenticationService,
+    private userService: UserService,
+    private paymentService: PaymentService,
+    private formBuilder: FormBuilder
+  ) { }
+
+  ngOnInit(): void {
+    this.receivePaymentForm = this.formBuilder.group({
+      amount: [0.0, [Validators.required]],
+      rawId: [Date.now(), [Validators.required]]
+    });
+
+    this.getPendingPayments();
+  }
+
+  get pF() { return this.receivePaymentForm.controls; }
+
+  onSubmit() {
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.receivePaymentForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.paymentService.receivePayment(this.pF.amount.value, this.pF.rawId.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate([data.id], { relativeTo: this.route });
+          this.pF.rawId.setValue(Date.now());
+        },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+        });
+  }
+
+  getPendingPayments() {
+    this.paymentService.getPendingPayments()
+      .subscribe(
+        data => {
+          this.pending = data;
+        }
+      )
+  }
+}
