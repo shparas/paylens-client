@@ -1,5 +1,5 @@
 <div *ngIf="login; then loginBlock; else registerBlock;"></div>
-
+Hi there! Please login or register to continue.
 <ng-template #loginBlock>
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <input type="email" formControlName="emailOrPhone" placeholder="Email">
