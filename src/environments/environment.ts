@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://api.sp.eparas.com:8080"
+  apiUrl: "http://api.sp.eparas.com:8081"
 };
 
 /*
