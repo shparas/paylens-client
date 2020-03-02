@@ -1,4 +1,5 @@
 [![Build status](https://dev.azure.com/shparas97/sigmoid-pay-client/_apis/build/status/sigmoid-pay-client-CI)](https://dev.azure.com/shparas97/sigmoid-pay-client/_build/latest?definitionId=4)
+
 # sigmoidPayClient
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.2.
