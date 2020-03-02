@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'web-views'`, () => {
+  it(`should have as title 'sigmoid-pay-client'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('web-views');
+    expect(app.title).toEqual('sigmoid-pay-client');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('web-views app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('sigmoid-pay-client app is running!');
   });
 });

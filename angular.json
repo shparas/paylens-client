@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "web-views": {
+    "sigmoid-pay-client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/web-views",
+            "outputPath": "dist/sigmoid-pay-client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "web-views:build"
+            "browserTarget": "sigmoid-pay-client:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "web-views:build:production"
+              "browserTarget": "sigmoid-pay-client:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "web-views:build"
+            "browserTarget": "sigmoid-pay-client:build"
           }
         },
         "test": {
@@ -116,16 +116,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "web-views:serve"
+            "devServerTarget": "sigmoid-pay-client:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "web-views:serve:production"
+              "devServerTarget": "sigmoid-pay-client:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "web-views"
+  "defaultProject": "sigmoid-pay-client"
 }

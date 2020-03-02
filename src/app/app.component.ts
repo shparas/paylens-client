@@ -10,7 +10,7 @@ import  { User }  from './_models';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  title = 'web-views';
+  title = 'sigmoid-pay-client';
 
   currentUser: User;
 
