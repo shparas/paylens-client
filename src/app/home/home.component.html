@@ -1,25 +1,63 @@
 <div *ngIf="login; then loginBlock; else registerBlock;"></div>
-Hi there! Please login or register to continue.
-<ng-template #loginBlock>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <input type="email" formControlName="emailOrPhone" placeholder="Email">
-        <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
 
-        <input type="password" formControlName="password" placeholder="Password">
-        
-        <button (click)="login=false">Register Instead</button>
-        <button type="submit" [disabled]="!loginForm.valid">Login</button>
-    </form>
+<ng-template #loginBlock>
+    <div class="form-container py-5 text-center">
+        <h2>
+            Hey there! Welcome back.
+        </h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <div class="pt-2">
+                <input class="form-control" type="email" formControlName="emailOrPhone" placeholder="Email">
+                <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+            </div>
+            <div class="pt-2">
+                <input class="form-control" type="password" formControlName="password" placeholder="Password">
+                <app-form-control-message class="invalid-feedback" [control]="loginForm.get('password')">
+                </app-form-control-message>
+            </div>
+            <div class="pt-2">
+                <button class="form-control btn btn-primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+            </div>
+        </form>
+        <div class="py-3">
+            <button class="btn btn-link" (click)="login=false">I don't have an account yet...</button>
+        </div>
+    </div>
 </ng-template>
 
 <ng-template #registerBlock>
-    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-        <input type="text" formControlName="firstname" placeholder="First Name">
-        <input type="text" formControlName="lastname" placeholder="Last Name">
-        <input type="email" formControlName="email" placeholder="Email">
-        <input type="phone" formControlName="phone" placeholder="Phone">
-        <input type="password" formControlName="password" placeholder="Password">
-        <button (click)="login = true">Login Instead</button>
-        <button type="submit">Register</button>
-    </form>
+    <div class="form-container py-5 text-center">
+        <h2>
+            Lets set you up with an account!
+        </h2>
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            <div class="pt-2">
+                <input class="form-control" type="text" formControlName="firstname" placeholder="First Name">
+                <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+            </div>
+            <div class="pt-2">
+                <input class="form-control" type="text" formControlName="lastname" placeholder="Last Name">
+                <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+            </div>
+            <div class="pt-2">
+                <input class="form-control" type="email" formControlName="email" placeholder="Email">
+                <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+            </div>
+            <div class="pt-2">
+                <input class="form-control" type="phone" formControlName="phone" placeholder="Phone">
+                <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+            </div>
+            <div class="pt-2">
+                <input class="form-control" type="password" formControlName="password" placeholder="Password">
+                <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+            </div>
+            <div class="pt-2">
+                <button class="form-control btn btn-primary" type="submit">Register</button>
+                <app-form-control-message [control]="loginForm.get('emailOrPhone')"></app-form-control-message>
+            </div>
+        </form>
+        <div class="py-3">
+            <button class="btn btn-link" (click)="login=true">I already have an account though...</button>
+        </div>
+    </div>
 </ng-template>

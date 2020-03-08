@@ -68,6 +68,13 @@ export class PaymentService {
       }));
   }
 
+  getPaymentDetail(id: string){
+    return this.http.get<any>(`${environment.apiUrl}/make-payment/get-payment-details?id=${id}`)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

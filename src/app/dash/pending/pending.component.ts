@@ -3,6 +3,7 @@ import { first } from 'rxjs/operators';
 
 import { User } from '../../_models';
 import { UserService, AuthenticationService, PaymentService } from '../../_services';
+import { DateTime } from 'src/app/_helpers';
 
 @Component({
   selector: 'app-pending',
@@ -12,6 +13,7 @@ import { UserService, AuthenticationService, PaymentService } from '../../_servi
 export class PendingComponent implements OnInit {
   currentUser: User;
   componentData = [];
+  outputData = [];
 
   itemPerPage = 20;
   _page: number = 1;
@@ -44,10 +46,44 @@ export class PendingComponent implements OnInit {
             this.page--;
           }
           else {
-            this.componentData = data;
+            this.formatData(data);
           }
         }
       )
+  }
+
+  formatData(data: any) {
+    // store original data
+    this.componentData = data;
+
+    // modify to display output
+    this.outputData = [];
+    var dayTransactions = [];
+    var activeDay = undefined;
+    data.forEach(element => {
+      var day = DateTime.utcToLocalMmDdYyyy(element.createdOn);
+
+      if (!activeDay) {
+        activeDay = day;
+      }
+
+      if (day != activeDay) {
+        var dayItemCollection = { day: activeDay, data: dayTransactions };
+        this.outputData.push(dayItemCollection);
+
+        activeDay = day;
+        dayTransactions = [];
+      }
+
+      var time = DateTime.utcToLocalHhMm(element.createdOn);
+      var dayItem = { time: time, data: element };
+      dayTransactions.push(dayItem);
+    });
+
+    var dayItemCollection = { day: activeDay, data: dayTransactions };
+    this.outputData.push(dayItemCollection);
+
+    console.log(this.outputData);
   }
 
   nextPage() {

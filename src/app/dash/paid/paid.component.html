@@ -1,9 +1,11 @@
-
 <div>
     <h4>Paid</h4>
     <button (click)="previousPage();">Previous Page</button>
     <button (click)="nextPage();">Next Page</button>
-    <div *ngFor="let item of componentData; let i = index">
-        {{ i + 1 + (page - 1) * itemPerPage }} You paid {{ item.createdBy }} ${{ item.amount }} on {{ item.paidOn }}.
+    <div *ngFor="let day of outputData; let i = index">
+        <h2>{{day.day}}</h2>
+        <div *ngFor="let dayItems of day.data; let i = index">
+            {{dayItems.time}} - You paid ${{dayItems.data.amount}} to {{dayItems.data.createdBy}}.
+        </div>
     </div>
 </div>

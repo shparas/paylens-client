@@ -15,7 +15,7 @@ import { PayComponent } from './pay/pay.component';
 import { ReceiveComponent } from './receive/receive.component';
 import { ReceivePortalComponent } from './receive/receive-portal/receive-portal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DialogComponent } from './_minicomponents/dialog/dialog.component';
+import { ConfirmationDialogBoxComponent } from './_minicomponents/confirmation-dialog-box/confirmation-dialog-box.component';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,6 +25,8 @@ import { PaidComponent } from './dash/paid/paid.component';
 import { ReceivedComponent } from './dash/received/received.component';
 import { BalanceComponent } from './dash/balance/balance.component';
 import { PendingComponent } from './dash/pending/pending.component';
+import { AlertDialogBoxComponent } from './_minicomponents/alert-dialog-box/alert-dialog-box.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -38,11 +40,13 @@ import { PendingComponent } from './dash/pending/pending.component';
     PayComponent,
     ReceiveComponent,
     ReceivePortalComponent,
-    DialogComponent,
+    ConfirmationDialogBoxComponent,
     PaidComponent,
     ReceivedComponent,
     BalanceComponent,
-    PendingComponent
+    PendingComponent,
+    AlertDialogBoxComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

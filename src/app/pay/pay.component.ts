@@ -9,7 +9,7 @@ import { first } from 'rxjs/operators';
 import { ValidationService, AuthenticationService, UserService, AlertService, PaymentService } from '../_services';
 
 import jsQR, { QRCode } from 'jsqr';
-import { DialogComponent } from '../_minicomponents/dialog/dialog.component';
+import { ConfirmationDialogBoxComponent, AlertDialogBoxComponent } from '../_minicomponents';
 
 
 declare var $: any;
@@ -20,9 +20,9 @@ declare var $: any;
   styleUrls: ['./pay.component.less']
 })
 export class PayComponent implements OnInit {
-  @ViewChild('video', {static: true}) videoElm: ElementRef;
-  @ViewChild('canvas', {static: true}) canvasElm: ElementRef;
-  
+  @ViewChild('video', { static: true }) videoElm: ElementRef;
+  @ViewChild('canvas', { static: true }) canvasElm: ElementRef;
+
   videoStart = false;
   medias: MediaStreamConstraints = {
     audio: false,
@@ -38,7 +38,8 @@ export class PayComponent implements OnInit {
   }
 
   constructor(
-    public dialog: MatDialog,
+    public confirmationDialog: MatDialog,
+    public alertDialog: MatDialog,
     private http: HttpClientModule,
     private route: ActivatedRoute,
     private router: Router,
@@ -61,28 +62,16 @@ export class PayComponent implements OnInit {
   get pF() { return this.makePaymentForm.controls; }
   onSubmit() {
     this.submitted = true;
-
+    
     // reset alerts on submit
     this.alertService.clear();
-
+    
     // stop here if form is invalid
     if (this.makePaymentForm.invalid) {
       return;
     }
-
-    this.loading = true;
-
-    this.paymentService.makePayment(this.pF.id.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          console.log(data);
-          this.router.navigate(['..'], { relativeTo: this.route });
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
+    
+    this.openDialog(this.pF.id.value);
   }
 
 
@@ -121,7 +110,7 @@ export class PayComponent implements OnInit {
   checkImage() {
     const WIDTH = this.videoElm.nativeElement.clientWidth;
     const HEIGHT = this.videoElm.nativeElement.clientHeight;
-    this.canvasElm.nativeElement.width  = WIDTH;
+    this.canvasElm.nativeElement.width = WIDTH;
     this.canvasElm.nativeElement.height = HEIGHT;
 
     const ctx = this.canvasElm.nativeElement.getContext('2d') as CanvasRenderingContext2D;
@@ -131,24 +120,64 @@ export class PayComponent implements OnInit {
     const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" })
 
     if (code) {
-        this.openDialog(code);
+      this.openDialog(code.data);
     } else {
-        setTimeout(() => { this.checkImage(); }, 100)
+      setTimeout(() => { this.checkImage(); }, 100)
     }
   }
 
-  openDialog(code: QRCode): void {
-    this.stopVideo();
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '360px',
-      data: {data: code.data}
-    });
+  openDialog(transactionId: string): void {
+    var tempVideoStartValue = this.videoStart;
+    this.loading = true;
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.checkImage();
-    });
-  }
+    if (tempVideoStartValue) {
+      this.stopVideo();
+    }
 
+    this.paymentService.getPaymentDetail(transactionId).subscribe(
+      data => {
+        var displayPrompt = `You're about to pay $${data.amount} to ${data.createdBy}. Confirm payment?`;
+        const confirmationDialogRef = this.confirmationDialog.open(ConfirmationDialogBoxComponent, {
+          width: '360px',
+          data: {
+            displayPrompt: displayPrompt
+          }
+        });
+
+        confirmationDialogRef.afterClosed().subscribe(result => {
+          if (result.confirm == true) {
+            this.paymentService.makePayment(transactionId)
+              .pipe(first())
+              .subscribe(
+                data => {
+                  var displayPrompt = "Success!"
+                  const alertDialogRef = this.alertDialog.open(AlertDialogBoxComponent, {
+                    width: '360px',
+                    data: {
+                      displayPrompt: displayPrompt
+                    }
+                  });
+                  alertDialogRef.afterClosed().subscribe(result => {
+                    this.router.navigate(['..'], { relativeTo: this.route });
+                  });
+                },
+                error => {
+                  this.alertService.error(error);
+                  this.loading = false;
+                });
+          } else {
+            this.loading = false;
+            if (tempVideoStartValue) {
+              this.startVideo();
+            }
+          }
+        });
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+      });
+  };
 }
 
 

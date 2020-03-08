@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 import { ValidationService, AuthenticationService, UserService, AlertService, PaymentService } from '../_services';
+import { DateTime } from '../_helpers';
 
 @Component({
   selector: 'app-receive',
@@ -15,7 +16,8 @@ export class ReceiveComponent implements OnInit {
   receivePaymentForm: any;
   loading = false;
   submitted = false;
-  pending = [];
+  componentData = [];
+  outputData = [];
 
   get uniqueId() {
     return Date.now();
@@ -73,8 +75,43 @@ export class ReceiveComponent implements OnInit {
     this.paymentService.getPendingPayments()
       .subscribe(
         data => {
-          this.pending = data;
+          this.formatData(data);
         }
       )
   }
+
+  formatData(data: any) {
+    // store original data
+    this.componentData = data;
+
+    // modify to display output
+    this.outputData = [];
+    var dayTransactions = [];
+    var activeDay = undefined;
+    data.forEach(element => {
+      var day = DateTime.utcToLocalMmDdYyyy(element.createdOn);
+
+      if (!activeDay) {
+        activeDay = day;
+      }
+
+      if (day != activeDay) {
+        var dayItemCollection = { day: activeDay, data: dayTransactions };
+        this.outputData.push(dayItemCollection);
+
+        activeDay = day;
+        dayTransactions = [];
+      }
+
+      var time = DateTime.utcToLocalHhMm(element.createdOn);
+      var dayItem = { time: time, data: element };
+      dayTransactions.push(dayItem);
+    });
+
+    var dayItemCollection = { day: activeDay, data: dayTransactions };
+    this.outputData.push(dayItemCollection);
+
+    console.log(this.outputData);
+  }
+
 }

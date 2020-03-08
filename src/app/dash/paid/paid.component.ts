@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
+import { DateTime } from '../../_helpers';
 import { User } from '../../_models';
 import { UserService, AuthenticationService, PaymentService } from '../../_services';
 
@@ -12,6 +13,7 @@ import { UserService, AuthenticationService, PaymentService } from '../../_servi
 export class PaidComponent implements OnInit {
   currentUser: User;
   componentData = [];
+  outputData = [];
 
   itemPerPage = 20;
   _page: number = 1;
@@ -25,7 +27,7 @@ export class PaidComponent implements OnInit {
   get page(): number {
     return this._page;
   }
-  
+
   constructor(
     private authenticationService: AuthenticationService,
     private userService: UserService,
@@ -40,25 +42,59 @@ export class PaidComponent implements OnInit {
 
   getPaidPayments() {
     this.paymentService.getPaidPayments(this.page)
-    .subscribe(
-      data => {
-        if (data.length == 0){
-          this.page--;
+      .subscribe(
+        data => {
+          if (data.length == 0) {
+            this.page--;
+          }
+          else {
+            this.formatData(data);
+          }
         }
-        else {
-          this.componentData = data;
-        }
+      )
+  }
+
+  formatData(data: any) {
+    // store original data
+    this.componentData = data;
+
+    // modify to display output
+    this.outputData = [];
+    var dayTransactions = [];
+    var activeDay = undefined;
+    data.forEach(element => {
+      var day = DateTime.utcToLocalMmDdYyyy(element.paidOn);
+
+      if (!activeDay) {
+        activeDay = day;
       }
-    )
-}
 
-nextPage() {
-  this.page++;
-  this.getPaidPayments();
-}
+      if (day != activeDay) {
+        var dayItemCollection = { day: activeDay, data: dayTransactions };
+        this.outputData.push(dayItemCollection);
 
-previousPage() {
-  this.page--;
-  this.getPaidPayments();
-}
+        activeDay = day;
+        dayTransactions = [];
+      }
+
+      var time = DateTime.utcToLocalHhMm(element.paidOn);
+      var dayItem = { time: time, data: element };
+      dayTransactions.push(dayItem);
+    });
+
+    var dayItemCollection = { day: activeDay, data: dayTransactions };
+    this.outputData.push(dayItemCollection);
+
+    console.log(this.outputData);
+  }
+
+  nextPage() {
+    this.page++;
+    this.getPaidPayments();
+  }
+
+  previousPage() {
+    this.page--;
+    this.getPaidPayments();
+  }
 }

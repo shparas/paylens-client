@@ -10,7 +10,10 @@
 
 <div>
     <h4>Past Pending Payments</h4>
-    <div *ngFor="let item of pending; let i = index">
-        {{ i }} Payment of amount ${{ item.amount }} created on {{ item.createdOn }}.
+    <div *ngFor="let day of outputData; let i = index">
+        <h2>{{day.day}}</h2>
+        <div *ngFor="let dayItems of day.data; let i = index">
+            {{dayItems.time}} - You have pending payment of ${{dayItems.data.amount}}.
+        </div>
     </div>
 </div>
