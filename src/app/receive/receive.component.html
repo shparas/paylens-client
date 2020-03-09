@@ -1,19 +1,21 @@
-<div>
+<div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
+    <form [formGroup]="receivePaymentForm" (ngSubmit)="onSubmit()">
+        <h2>Enter the amount to generate the request</h2>
+        <div class="input-group mb-2 mr-sm-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">$</div>
+            </div>
+            <input type="number" formControlName="amount" class="form-control" placeholder="Amount ($)">
+            <div class="input-group-append">
+                <input type="hidden" formControlName="rawId">
+                <button type="submit" class="input-group-text btn btn-primary text-white bg-primary border-primary">Create Request</button>
+            </div>
+        </div>
+    </form>
     <router-outlet></router-outlet>
 </div>
 
-<form [formGroup]="receivePaymentForm" (ngSubmit)="onSubmit()">
-    <input type="number" formControlName="amount" placeholder="Amount ($)">
-    <input type="hidden" formControlName="rawId">
-    <button type="submit">Create Payment Request</button>
-</form>
-
-<div>
-    <h4>Past Pending Payments</h4>
-    <div *ngFor="let day of outputData; let i = index">
-        <h2>{{day.day}}</h2>
-        <div *ngFor="let dayItems of day.data; let i = index">
-            {{dayItems.time}} - You have pending payment of ${{dayItems.data.amount}}.
-        </div>
-    </div>
+<div class="shadow-lg bg-white p-3 m-3 mt-5 rounded mx-auto">
+    <h2>Past Pending Payments</h2>
+    <app-pending></app-pending>
 </div>

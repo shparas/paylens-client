@@ -12,9 +12,7 @@ import { ValidationService, AuthenticationService, UserService, AlertService } f
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
-
-  public login = true;
-
+  login = false;
   loginForm: any;
   registerForm: any;
   loading = false;
