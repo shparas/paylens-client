@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://api.sp.eparas.com:8081"
+  apiUrl: "http://api.sp.eparas.com:8081",
+  plaidApiUrl: "https://sandbox.plaid.com",
+  plaidPublicKey: "066eab548902d1532836b65fa0c7be"
 };
 
 /*

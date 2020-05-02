@@ -27,6 +27,8 @@ import { BalanceComponent } from './dash/balance/balance.component';
 import { PendingComponent } from './dash/pending/pending.component';
 import { AlertDialogBoxComponent } from './_minicomponents/alert-dialog-box/alert-dialog-box.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AccountCardComponent } from './_minicomponents/account-card/account-card.component';
+import { TransferredComponent } from './dash/transferred/transferred.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     BalanceComponent,
     PendingComponent,
     AlertDialogBoxComponent,
-    SidebarComponent
+    SidebarComponent,
+    AccountCardComponent,
+    TransferredComponent
   ],
   imports: [
     BrowserModule,

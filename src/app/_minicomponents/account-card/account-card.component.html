@@ -1,0 +1,8 @@
+<div class="card shadow-lg text-white account mb-2" [ngStyle]="getBackground()">
+    <div class="card-overlay">
+        <div class="card-img-overlay">
+            <h2 class="card-title">{{account.institution.name}}</h2>
+            <h3>{{account.subtype | titlecase}} - ...{{account.mask}}</h3>
+        </div>
+    </div>
+</div>
