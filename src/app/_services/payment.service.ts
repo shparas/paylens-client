@@ -19,7 +19,7 @@ export class PaymentService {
   }
 
   receivePayment(amount, rawId) {
-    return this.http.post<any>(`${environment.apiUrl}/receive-payment`, { amount, rawId })
+    return this.http.post<any>(`${environment.apiUrl}/payment`, { amount, rawId })
       .pipe(map(data => {
         return data;
       }));
@@ -27,49 +27,42 @@ export class PaymentService {
 
 
   makePayment(id) {
-    return this.http.post<any>(`${environment.apiUrl}/make-payment`, { id })
+    return this.http.post<any>(`${environment.apiUrl}/payment/pay/${id}`, { })
       .pipe(map(data => {
         return data;
       }));
   }
 
   getPendingPayments(page = 1) {
-    return this.http.get<any>(`${environment.apiUrl}/receive-payment/pending?page=${page}`)
+    return this.http.get<any>(`${environment.apiUrl}/payment/pending?page=${page}`)
       .pipe(map(data => {
         return data;
       }));
   }
 
   getPaidPayments(page = 1) {
-    return this.http.get<any>(`${environment.apiUrl}/receive-payment/paid?page=${page}`)
+    return this.http.get<any>(`${environment.apiUrl}/payment/paid?page=${page}`)
       .pipe(map(data => {
         return data;
       }));
   }
 
   getReceivedPayments(page = 1) {
-    return this.http.get<any>(`${environment.apiUrl}/receive-payment/received?page=${page}`)
+    return this.http.get<any>(`${environment.apiUrl}/payment/received?page=${page}`)
       .pipe(map(data => {
         return data;
       }));
   }
 
   getPaymentStatus(id) {
-    return this.http.get<any>(`${environment.apiUrl}/receive-payment/status?id=${id}`)
-      .pipe(map(data => {
-        return data;
-      }));
-  }
-
-  getBalance() {
-    return this.http.get<any>(`${environment.apiUrl}/receive-payment/balance`)
+    return this.http.get<any>(`${environment.apiUrl}/payment/status/${id}`)
       .pipe(map(data => {
         return data;
       }));
   }
 
   getPaymentDetail(id: string){
-    return this.http.get<any>(`${environment.apiUrl}/make-payment/get-payment-details?id=${id}`)
+    return this.http.get<any>(`${environment.apiUrl}/payment/details/${id}`)
       .pipe(map(data => {
         return data;
       }));

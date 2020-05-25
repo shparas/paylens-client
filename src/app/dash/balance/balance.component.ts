@@ -11,22 +11,23 @@ import { UserService, AuthenticationService, PaymentService } from '../../_servi
 })
 export class BalanceComponent implements OnInit {
   currentUser: User;
-  balance:number = 0;
+  balance: number = 0;
 
   constructor(
-      private authenticationService: AuthenticationService,
-      private paymentService: PaymentService
+    private authenticationService: AuthenticationService,
+    private paymentService: PaymentService,
+    private userService: UserService
   ) {
-      this.currentUser = this.authenticationService.currentUserValue;
+    this.currentUser = this.authenticationService.currentUserValue;
   }
 
   ngOnInit() {
-      this.getBalance();
+    this.getBalance();
   }
- 
-  
+
+
   getBalance() {
-    this.paymentService.getBalance()
+    this.userService.getBalance()
       .subscribe(
         data => {
           this.balance = data.balance || 0.0;

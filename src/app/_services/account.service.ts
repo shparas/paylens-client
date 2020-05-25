@@ -14,28 +14,28 @@ export class AccountService {
   ) { }
 
   addAccount(publicToken, account, institution) {
-    return this.http.post<any>(`${environment.apiUrl}/accounts`, { publicToken, account, institution })
+    return this.http.post<any>(`${environment.apiUrl}/account`, { publicToken, account, institution })
       .pipe(map(data => {
         return data;
       }));
   }
 
   getAllAccounts(){
-    return this.http.get<any>(`${environment.apiUrl}/accounts`)
+    return this.http.get<any>(`${environment.apiUrl}/account`)
       .pipe(map(data => {
         return data;
       }));
   }
 
   processPayment(accountId: string, withdraw: boolean, amount: number){
-    return this.http.post<any>(`${environment.apiUrl}/accounts/transfer`, {accountId, withdraw, amount})
+    return this.http.post<any>(`${environment.apiUrl}/account/transfer`, {accountId, withdraw, amount})
       .pipe(map(data => {
         return data;
       }));
   }
 
   getTransfers(pageNumber){
-    return this.http.get<any>(`${environment.apiUrl}/accounts/transfer`)
+    return this.http.get<any>(`${environment.apiUrl}/account/transfer`)
     .pipe(map(data => {
       return data;
     }));

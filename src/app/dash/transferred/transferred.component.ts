@@ -71,7 +71,7 @@ export class TransferredComponent implements OnInit {
       element.accountName = element.accountId;
 
       this._accounts.forEach(account => {
-        if (account.id == element.accountId){
+        if (account.accountId == element.accountId){
           element.accountName = `${account.institution.name} - ${account.subtype} (...${account.mask})`;
         }
       })

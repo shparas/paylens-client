@@ -31,18 +31,6 @@ export class DashComponent implements OnInit {
       this.getReceivedPayments();
   }
  
-  deleteUser(id: number) {
-      this.userService.delete(id)
-          .pipe(first())
-          .subscribe(() => this.loadAllUsers());
-  }
-
-  private loadAllUsers() {
-      this.userService.getAll()
-          .pipe(first())
-          .subscribe(users => this.users = users);
-  }
-
   getPendingPayments() {
     this.paymentService.getPendingPayments()
       .subscribe(

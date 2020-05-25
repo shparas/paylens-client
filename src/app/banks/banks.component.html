@@ -26,7 +26,7 @@
                 </div>
                 <select formControlName="accountId" class="custom-select" name="accountId">
                     <option disabled selected>Select One</option>
-                    <option *ngFor="let account of _accounts; first as isFirst;" value="{{account.id}}">
+                    <option *ngFor="let account of _accounts; first as isFirst;" value="{{account.accountId}}">
                             {{account.institution.name}} - {{account.subtype|titlecase}} (...{{account.mask}})</option>
                 </select>
             </div>
