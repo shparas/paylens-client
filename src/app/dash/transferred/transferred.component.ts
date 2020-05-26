@@ -65,7 +65,7 @@ export class TransferredComponent implements OnInit {
     var dayTransactions = [];
     var activeDay = undefined;
     data.forEach(element => {
-      var day = DateTime.utcToLocalMmDdYyyy(element.createdOn);
+      var day = DateTime.utcToLocalMmDdYyyy(element.date);
       
       console.log("ACC:", this._accounts);
       element.accountName = element.accountId;
@@ -88,7 +88,7 @@ export class TransferredComponent implements OnInit {
         dayTransactions = [];
       }
 
-      var time = DateTime.utcToLocalHhMm(element.createdOn);
+      var time = DateTime.utcToLocalHhMm(element.date);
       var dayItem = { time: time, data: element };
       dayTransactions.push(dayItem);
     });
