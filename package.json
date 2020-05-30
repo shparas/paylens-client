@@ -8,7 +8,12 @@
     "build-prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ionic-run": "ionic serve",
+    "capacitor-copy": "ionic capacitor copy android",
+    "capacitor-run": "ionic capacitor run android -l --host=0.0.0.0",
+    "capacitor-run-external": "ionic capacitor run android -l --external",
+    "capacitor-run-external-prod": "ionic capacitor run android -l --external --prod"
   },
   "private": true,
   "dependencies": {
