@@ -5,7 +5,7 @@
                 <li class="nav-item" *ngFor="let p of tabLinks; let i = index">
                     <a (click)="selectedIndex = i" class="nav-link" [class.active]="selectedIndex == i" routerLink="{{ p.url }}">
                         <ion-tab-button [selected]="selectedIndex == i">
-                            <ion-icon [name]="p.icon"></ion-icon>
+                            <ion-icon size="large" [name]="p.icon"></ion-icon>
                             <ion-label><h2>{{ p.title }}</h2></ion-label>
                         </ion-tab-button>
                     </a>
