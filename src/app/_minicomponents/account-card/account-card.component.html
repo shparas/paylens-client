@@ -1,4 +1,4 @@
-<div *ngIf="!deleted" class="card shadow-lg text-white account mb-2" [ngStyle]="getBackground()">
+<div *ngIf="!this.deleted" class="card shadow-lg text-white account mb-2" [ngStyle]="getBackground()">
     <div class="card-overlay position-absolute has-close-item">
         <div class="card-img-overlay tag">
             <button type="button" class="close text-white" aria-label="Close" (click)="removeAccount()">

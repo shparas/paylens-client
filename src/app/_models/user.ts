@@ -6,6 +6,7 @@ export class User {
         email: string;
         phone: string;
         id: string;
-        expireTime: string
+        expireTime: string;
+        balance: number;
     }
 }

@@ -11,8 +11,8 @@ import { AccountService, AlertService } from 'src/app/_services';
 })
 export class AccountCardComponent implements OnInit {
   @Input() account: any;
-  private deleted = false;
-  private loading = false;
+  public deleted = false;
+  public loading = false;
 
   getBackground() {
     return {
