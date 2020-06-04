@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-prod": "lite-server --baseDir=\"www\"",
     "build": "ng build",
     "build-prod": "ng build --prod",
     "test": "ng test",
@@ -36,6 +37,7 @@
     "@ionic/angular": "^5.0.0",
     "@ionic/pwa-elements": "^1.5.2",
     "jsqr": "^1.2.0",
+    "lite-server": "^2.5.4",
     "phonegap-plugin-barcodescanner": "^8.1.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
