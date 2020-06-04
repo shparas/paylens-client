@@ -30,6 +30,14 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { AccountCardComponent } from './_minicomponents/account-card/account-card.component';
 import { TransferredComponent } from './dash/transferred/transferred.component';
 
+import { Platform, IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { RouteReuseStrategy } from '@angular/router';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +62,7 @@ import { TransferredComponent } from './dash/transferred/transferred.component';
   ],
   imports: [
     BrowserModule,
+    IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -64,8 +73,13 @@ import { TransferredComponent } from './dash/transferred/transferred.component';
     MatDialogModule
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
+    BarcodeScanner,
+    Platform,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    //, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })

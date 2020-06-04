@@ -1,3 +1,26 @@
+<ion-app>
+    <ion-menu contentId="main-content" type="overlay">
+        <ion-content>
+          <ion-list id="inbox-list">
+            <ion-list-header>Inbox</ion-list-header>
+            <ion-note>hi@ionicframework.com</ion-note>
+  
+            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+              <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
+                <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+  
+          <ion-list id="labels-list">
+            <ion-list-header>Labels</ion-list-header>
+  
+            jksdfi
+          </ion-list>
+        </ion-content>
+      </ion-menu>
+</ion-app>
 <div class="container-fluid">
     <div class="row">
         <div *ngIf="currentUser" class="col-12 col-md-4 col-lg-3 bg-dark p-0 m-0">
@@ -5,7 +28,7 @@
         </div>
         <div class="main-body-element p-3" [ngClass]="currentUser?'col-12 col-md-8 col-lg-9':'col-12'">
             <app-alert></app-alert>
-            <router-outlet></router-outlet>
+            <router-outlet id="main-content"></router-outlet>
         </div>
     </div>
 </div>

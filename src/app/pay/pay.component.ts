@@ -4,13 +4,14 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 
 import { ValidationService, AuthenticationService, UserService, AlertService, PaymentService } from '../_services';
 
 import jsQR, { QRCode } from 'jsqr';
 import { ConfirmationDialogBoxComponent, AlertDialogBoxComponent } from '../_minicomponents';
-
+import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
+import { Platform } from '@ionic/angular';
 
 declare var $: any;
 
@@ -28,6 +29,8 @@ export class PayComponent implements OnInit {
     audio: false,
     video: false,
   };
+
+  browserMode: boolean = undefined;
 
   makePaymentForm: any;
   loading = false;
@@ -47,9 +50,18 @@ export class PayComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private paymentService: PaymentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private barcodeScanner: BarcodeScanner,
+    public platform: Platform
   ) {
-    this.router.events.subscribe(() => {
+    this.router.events.subscribe(() => { });
+
+    this.platform.ready().then(() => {
+      if (this.platform.is('hybrid')) {
+        this.browserMode = false;
+      } else {
+        this.browserMode = true;
+      }
     });
   }
 
@@ -62,26 +74,37 @@ export class PayComponent implements OnInit {
   get pF() { return this.makePaymentForm.controls; }
   onSubmit() {
     this.submitted = true;
-    
+
     // reset alerts on submit
     this.alertService.clear();
-    
+
     // stop here if form is invalid
     if (this.makePaymentForm.invalid) {
       return;
     }
-    
+
     this.openDialog(this.pF.id.value);
   }
 
-
   toggleVideoMedia() {
-    if (this.videoStart) {
-      this.stopVideo();
-    } else {
-      this.startVideo()
+    if (this.browserMode === true) {
+      return this.videoStart ? this.stopVideo() : this.startVideo();
+    } else if (this.browserMode === false) {
+      const options: BarcodeScannerOptions = {
+        showFlipCameraButton: true,
+        showTorchButton: true,
+        prompt: 'Place the code inside the scan region',
+        resultDisplayDuration: 500,
+        formats: 'QR_CODE,PDF_417',
+        orientation: 'portrait',
+      };
+
+      this.barcodeScanner.scan(options).then(barcodeData => {
+        console.log('Barcode data', barcodeData);
+      }).catch(err => {
+        console.log('Error', err);
+      });
     }
-    // this.videoStart ? this.stopVideo() : this.startVideo()
   }
 
   startVideo() {
