@@ -13,4 +13,4 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   .then(() => {
     defineCustomElements(window);
   })
-  .catch(err => console.error(err));
+  .catch(err => console.log(err));

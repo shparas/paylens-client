@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'confirmation-dialog-box-dialog',
   templateUrl: './confirmation-dialog-box.component.html',
-  styleUrls: ['./confirmation-dialog-box.component.less']
+  styleUrls: ['./confirmation-dialog-box.component.scss']
 })
 export class ConfirmationDialogBoxComponent {
   displayPrompt: string;

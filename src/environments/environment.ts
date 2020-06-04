@@ -1,13 +1,13 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
   production: false,
   apiUrl: "http://api.sp.eparas.com:8081",
   plaidApiUrl: "https://sandbox.plaid.com",
   plaidPublicKey: "066eab548902d1532836b65fa0c7be"
 };
+
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
 
 /*
  * For easier debugging in development mode, you can import the following file

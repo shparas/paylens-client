@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-6 text-left">
+        <button *ngIf="previousAvailable" class="btn btn-primary btn-sm" (click)="previousPage()">
+            Previous Page
+        </button>
+    </div>
+    <div class="col-6 text-right">
+        <button *ngIf="nextAvailable" class="btn btn-primary btn-sm" (click)="nextPage()">
+            Next Page
+        </button>
+    </div>
+</div>
+
+<div *ngFor="let day of outputData; let i = index">
+    <ul class="list-group py-2">
+        <li class="list-group-item bg-light text-dark font-weight-bold p-2">{{day.day}}</li>
+        <li class="list-group-item p-2 px-3" *ngFor="let dayItems of day.data; let i = index">
+            {{dayItems.time}} - You paid ${{dayItems.data.amount}} to {{dayItems.data.createdBy}}.
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-6 text-left">
+        <button *ngIf="previousAvailable" class="btn btn-primary btn-sm" (click)="previousPage()">
+            Previous Page
+        </button>
+    </div>
+    <div class="col-6 text-right">
+        <button *ngIf="nextAvailable" class="btn btn-primary btn-sm" (click)="nextPage()">
+            Next Page
+        </button>
+    </div>
+</div>
+
+<div *ngIf="outputData.length <= 0">
+    <h4>No previuos records found.</h4>
+</div>

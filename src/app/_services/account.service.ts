@@ -20,8 +20,15 @@ export class AccountService {
       }));
   }
 
-  getAllAccounts(){
-    return this.http.get<any>(`${environment.apiUrl}/account`)
+  removeAccount(accountId) {
+    return this.http.delete<any>(`${environment.apiUrl}/account/${accountId}`)
+    .pipe(map(data => {
+      return data;
+    }));
+  }
+
+  getAllAccounts(includeDeleted = false){
+    return this.http.get<any>(`${environment.apiUrl}/account?includeDeleted=${includeDeleted}`)
       .pipe(map(data => {
         return data;
       }));
@@ -34,8 +41,8 @@ export class AccountService {
       }));
   }
 
-  getTransfers(pageNumber){
-    return this.http.get<any>(`${environment.apiUrl}/account/transfer`)
+  getTransfers(page){
+    return this.http.get<any>(`${environment.apiUrl}/account/transfer?page=${page}`)
     .pipe(map(data => {
       return data;
     }));

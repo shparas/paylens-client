@@ -1,41 +1,64 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
-import { DashComponent } from './dash/dash.component';
+import { LoginRegisterComponent } from './login-register/login-register.component';
+import { ActivitiesLogComponent } from './activities-log/activities-log.component';
 import { SettingsComponent } from './settings/settings.component';
-import { ReceiveComponent } from './receive/receive.component';
-import { PayComponent } from './pay/pay.component';
+import { ReceiveComponent } from './home/receive/receive.component';
+import { HomeComponent } from './home/home.component';
+
 import { BanksComponent } from './banks/banks.component';
 import { AuthGuard } from './_helpers';
-import { ReceivePortalComponent } from './receive/receive-portal/receive-portal.component';
-import { PaidComponent } from './dash/paid/paid.component';
-import { BalanceComponent } from './dash/balance/balance.component';
-import { PendingComponent } from './dash/pending/pending.component';
-import { ReceivedComponent } from './dash/received/received.component';
-
+import { ReceivePortalComponent } from './home/receive/receive-portal/receive-portal.component';
+import { PaidComponent } from './activities-log/paid/paid.component';
+import { PendingComponent } from './activities-log/pending/pending.component';
+import { ReceivedComponent } from './activities-log/received/received.component';
+import { TransferredComponent } from './activities-log/transferred/transferred.component';
+import { PayComponent } from './home/pay/pay.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'banks', component: BanksComponent, canActivate: [AuthGuard] },
+  { path: '', component: LoginRegisterComponent },
+  { path: 'wallet', component: BanksComponent, canActivate: [AuthGuard] },
   {
-    path: 'dash', component: DashComponent, canActivate: [AuthGuard], children:
+    path: 'activities-log', component: ActivitiesLogComponent, canActivate: [AuthGuard], children:
       [
-        { path: '',  redirectTo: 'balance', pathMatch: 'full'  },
-        { path: 'balance', component: BalanceComponent },
+        { path: '', redirectTo: 'paid', pathMatch: 'full' },
         { path: 'paid', component: PaidComponent },
         { path: 'pending', component: PendingComponent },
-        { path: 'received', component: ReceivedComponent }
+        { path: 'received', component: ReceivedComponent },
+        { path: 'transferred', component: TransferredComponent }
       ]
   },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'pay', component: PayComponent, canActivate: [AuthGuard] },
-  { path: 'receive', component: ReceiveComponent, canActivate: [AuthGuard], children: [{ path: ':id', component: ReceivePortalComponent }] },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] }
+  {
+    path: 'home', component: HomeComponent, canActivate: [AuthGuard], children:
+      [
+        { path: '', redirectTo: 'pay', pathMatch: 'full' },
+        { path: 'pay', component: PayComponent },
+        {
+          path: 'receive', component: ReceiveComponent, children:
+            [
+              { path: ':id', component: ReceivePortalComponent }
+            ]
+        }      ]
+  },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'log-out', component: LoginRegisterComponent, canActivate: [AuthGuard] }
+
+  // {
+  //   path: '',
+  //   redirectTo: 'folder/Inbox',
+  //   pathMatch: 'full'
+  // },
+  // {
+  //   path: 'folder/:id',
+  //   loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+  // }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -17,7 +17,12 @@ export class AuthenticationService {
     }
 
     public get currentUserValue(): User {
-        return this.currentUserSubject.value;
+        if (Date.now() < parseInt(this.currentUserSubject.value?.userInfo.expireTime))
+            return this.currentUserSubject.value;
+        else {
+            this.logout();
+            return undefined;
+        }
     }
 
     login(emailOrPhone: string, password: string) {

@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto text-center">
+            <ul class="nav nav-justified">
+                <li class="nav-item" *ngFor="let p of tabLinks; let i = index">
+                    <a (click)="selectedIndex = i" class="nav-link px-0" [class.active]="selectedIndex == i" routerLink="{{ p.url }}">
+                        <ion-tab-button [selected]="selectedIndex == i">
+                            <ion-icon [name]="p.icon"></ion-icon>
+                            <ion-label><h2>{{ p.title }}</h2></ion-label>
+                            <ion-badge *ngIf="p.badge" [color]="p.badge.color">{{p.badge.text}}</ion-badge>
+                        </ion-tab-button>
+                        <!-- {{ p.title }} -->
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+            <div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@ import { ValidationService } from '../../_services';
 @Component({
   selector: 'app-form-control-message',
   templateUrl: './form-control-message.component.html',
-  styleUrls: ['./form-control-message.component.less']
+  styleUrls: ['./form-control-message.component.scss']
 })
 export class FormControlMessageComponent implements OnInit {
   @Input() control: FormControl;

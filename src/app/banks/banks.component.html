@@ -1,49 +1,65 @@
-<div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
-    <h2>Available Accounts</h2>
-    <div class="card-deck">
-        <app-account-card *ngFor="let account of _accounts" [account]="account">
-        </app-account-card>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+            <div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
+                <h3>Available Accounts</h3>
+                <div class="card-deck">
+                    <app-account-card *ngFor="let account of _accounts" [account]="account">
+                    </app-account-card>
+                </div>
+                <button class="btn btn-primary" (click)="addAccount()">Add Account</button>
+            </div>
+        </div>
     </div>
-    <button class="btn btn-primary" (click)="addAccount()">Add Account</button>
+
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+            <div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
+                <h3>Transfer Funds</h3>
+                <ng-template [ngIf]="transfer">
+                    <form [formGroup]="transferFundForm" (ngSubmit)="processPayment()">
+                        <div class="custom-control custom-radio mb-2">
+                            <input type="radio" id="toSigmoidPay" name="withdraw" formControlName="withdraw"
+                                class="custom-control-input" value="false">
+                            <label class="custom-control-label" for="toSigmoidPay">Transfer to Sigmoid Pay</label>
+                        </div>
+                        <div class="custom-control custom-radio mb-2">
+                            <input type="radio" id="toBankAcc" name="withdraw" formControlName="withdraw"
+                                class="custom-control-input" value="true">
+                            <label class="custom-control-label" for="toBankAcc">Transfer to your bank</label>
+                        </div>
+                        <div class="input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text form-prepend-tab-size">Select Account:</div>
+                            </div>
+                            <select formControlName="accountId" class="custom-select" name="accountId">
+                                <option disabled selected>Select One</option>
+                                <option *ngFor="let account of _accounts; first as isFirst;"
+                                    value="{{account.accountId}}">
+                                    {{account.institution.name}} - {{account.subtype|titlecase}} (...{{account.mask}})
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text form-prepend-tab-size">Transfer Amount: $</div>
+                            </div>
+                            <input type="number" formControlName="amount" class="form-control" placeholder="Amount ($)">
+                        </div>
+
+
+
+
+                        <div class="input-group mb-2 mr-sm-2">
+                            <input type="hidden" formControlName="rawId">
+                            <button type="submit"
+                                class="input-group-text btn btn-primary text-white bg-primary border-primary">Create
+                                Request</button>
+                        </div>
+                    </form>
+                </ng-template>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-<div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
-    <h2>Transfer Funds</h2>
-    <ng-template [ngIf]="transfer">
-        <form [formGroup]="transferFundForm" (ngSubmit)="processPayment()">
-            <div class="custom-control custom-radio mb-2">
-                <input type="radio" id="toSigmoidPay" name="withdraw" formControlName="withdraw" class="custom-control-input" value="false">
-                <label class="custom-control-label" for="toSigmoidPay">Transfer to Sigmoid Pay</label>
-            </div>
-            <div class="custom-control custom-radio mb-2">
-                <input type="radio" id="toBankAcc" name="withdraw" formControlName="withdraw" class="custom-control-input" value="true">
-                <label class="custom-control-label" for="toBankAcc">Transfer to your bank</label>
-            </div>
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">Account</div>
-                </div>
-                <select formControlName="accountId" class="custom-select" name="accountId">
-                    <option disabled selected>Select One</option>
-                    <option *ngFor="let account of _accounts; first as isFirst;" value="{{account.accountId}}">
-                            {{account.institution.name}} - {{account.subtype|titlecase}} (...{{account.mask}})</option>
-                </select>
-            </div>
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">Transfer Amount: $</div>
-                </div>
-                <input type="number" formControlName="amount" class="form-control" placeholder="Amount ($)">
-                <div class="input-group-append">
-                    <input type="hidden" formControlName="rawId">
-                    <button type="submit" class="input-group-text btn btn-primary text-white bg-primary border-primary">Create
-                        Request</button>
-                </div>
-            </div>
-        </form>
-    </ng-template>
-</div>
-
-<app-transferred [_accounts]="_accounts"></app-transferred>

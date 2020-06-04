@@ -1,0 +1,21 @@
+<div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
+  <form [formGroup]="receivePaymentForm" (ngSubmit)="onSubmit()">
+      <h4>Enter the amount to generate the request</h4>
+      <div class="input-group mb-2 mr-sm-2">
+          <div class="input-group-prepend">
+              <div class="input-group-text">$</div>
+          </div>
+          <input type="number" formControlName="amount" class="form-control" placeholder="Amount ($)">
+          <div class="input-group-append">
+              <input type="hidden" formControlName="rawId">
+              <button type="submit" class="input-group-text btn btn-primary text-white bg-primary border-primary">Create Request</button>
+          </div>
+      </div>
+  </form>
+  <router-outlet></router-outlet>
+</div>
+
+<div class="shadow-lg bg-white p-3 m-3 mt-5 rounded mx-auto">
+  <h4>Recent Pending Payments</h4>
+  <app-pending></app-pending>
+</div>

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -7,67 +8,63 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AuthenticationService } from './_services';
 import { User } from './_models';
+import { UserService } from './_services';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss']
 })
-export class AppComponent {
-  title = 'sigmoid-pay-client';
-
-
-  public selectedIndex = 0;
+export class AppComponent implements OnInit {
+  public title = 'Paylens';
+  public selectedIndex = -1;
+  public path = "";
   public appPages = [
     {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
+      title: 'Home',
+      url: '/home',
+      icon: 'home'
     },
     {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
+      title: 'Wallet',
+      url: '/wallet',
+      icon: 'wallet'
     },
     {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
+      title: 'Activities Log',
+      url: '/activities-log',
+      icon: 'receipt'
     },
     {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
+      title: 'Settings',
+      url: '/settings',
+      icon: 'settings'
     },
     {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
+      title: 'Log Out',
+      url: '/log-out',
+      icon: 'log-out'
     }
   ];
-
-
-  currentUser: User;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private userService: UserService
   ) {
-    // this.initializeApp();
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(val => {
+        this.path = window.location.pathname.split('/')[1];
+        if (this.path !== undefined) {
+          this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === this.path.toLowerCase().replace('-',' '));
+        }
+      });
+    this.initializeApp();
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-  }
-
-  logout() {
-    this.authenticationService.logout();
-    this.router.navigate(['/']);
   }
 
   initializeApp() {
@@ -75,5 +72,44 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  private _currentUser: User;
+  get currentUser(): User{
+    if (parseInt(this._currentUser?.userInfo.expireTime) >= Date.now()){
+      return this._currentUser;
+    } else {
+      this._currentUser = undefined;
+      return undefined;
+    }
+  }
+  set currentUser(user){
+    this._currentUser = user;
+  }
+
+  ngOnInit() {
+  }
+
+  getPageTitle() {
+    if (this.selectedIndex < 0) {
+      return "Welcome";
+    } else {
+      return this.appPages[this.selectedIndex].title;
+    }
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/']);
+  }
+
+  
+  getBalance() {
+    this.userService.getBalance()
+      .subscribe(
+        data => {
+          var balance = data.balance || 0.0;
+        }
+      );
   }
 }

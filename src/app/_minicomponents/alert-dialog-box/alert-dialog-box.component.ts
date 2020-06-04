@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-alert-dialog-box',
   templateUrl: './alert-dialog-box.component.html',
-  styleUrls: ['./alert-dialog-box.component.less']
+  styleUrls: ['./alert-dialog-box.component.scss']
 })
 export class AlertDialogBoxComponent {
   displayPrompt: string;

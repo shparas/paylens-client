@@ -1,104 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { first, takeUntil, filter } from 'rxjs/operators';
 
-import { ValidationService, AuthenticationService, UserService, AlertService } from '../_services';
+import { ValidationService, AuthenticationService, UserService, AlertService, PaymentService } from '../_services';
+
+import jsQR, { QRCode } from 'jsqr';
+import { ConfirmationDialogBoxComponent, AlertDialogBoxComponent } from '../_minicomponents';
+import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
+import { Platform } from '@ionic/angular';
+
+declare var $: any;
 
 @Component({
-  selector: 'app-main',
+  selector: 'app-pay',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.less']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  login = false;
-  loginForm: any;
-  registerForm: any;
-  loading = false;
-  submitted = false;
-  returnUrl: string;
+  public selectedIndex = -1;
+  public path = "";
+  public tabLinks = [
+    {
+      title: 'Pay',
+      url: 'pay',
+      icon: 'card'
+    },
+    {
+      title: 'Receive',
+      url: 'receive',
+      icon: 'cash'
+    }
+  ];
 
   constructor(
+    public confirmationDialog: MatDialog,
+    public alertDialog: MatDialog,
     private http: HttpClientModule,
     private route: ActivatedRoute,
     private router: Router,
     private alertService: AlertService,
     private authenticationService: AuthenticationService,
     private userService: UserService,
-    private formBuilder: FormBuilder
+    private paymentService: PaymentService,
+    private formBuilder: FormBuilder,
+    private barcodeScanner: BarcodeScanner,
+    public platform: Platform
   ) {
-    // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/dash']);
-    }
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(val => {
+        this.path = window.location.pathname.split('/')[2];
+        if (this.path !== undefined) {
+          this.selectedIndex = this.tabLinks.findIndex(page => page.title.toLowerCase() === this.path.toLowerCase());
+        }
+      });
   }
 
-  ngOnInit(): void {
-    this.loginForm = this.formBuilder.group({
-      emailOrPhone: ['', [Validators.required, ValidationService.emailValidator]],
-      password: ''
-    });
-    this.registerForm = this.formBuilder.group({
-      firstname: '',
-      lastname: '',
-      email: '',
-      phone: '',
-      password: ''
-    });
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dash';
-  }
-
-  get lF() { return this.loginForm.controls; }
-
-  onLogin() {
-    this.submitted = true;
-
-    // reset alerts on submit
-    this.alertService.clear();
-
-    // stop here if form is invalid
-    if (this.loginForm.invalid) {
-      return;
-    }
-
-    this.loading = true;
-console.log(this.lF.emailOrPhone.value);
-    this.authenticationService.login(this.lF.emailOrPhone.value, this.lF.password.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
-  }
-
-  get rF() { return this.registerForm.controls; }
-  onRegister() {
-    this.submitted = true;
-
-    // reset alerts on submit
-    this.alertService.clear();
-
-    // stop here if form is invalid
-    if (this.registerForm.invalid) {
-      return;
-    }
-
-    this.loading = true;
-    this.userService.register(this.registerForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/dash']);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
+  ngOnInit(){
   }
 }
+
+
+

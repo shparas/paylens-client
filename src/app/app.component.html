@@ -1,34 +1,50 @@
-<ion-app>
+<ion-app *ngIf="this.currentUser else guest">
+  <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
-        <ion-content>
-          <ion-list id="inbox-list">
-            <ion-list-header>Inbox</ion-list-header>
-            <ion-note>hi@ionicframework.com</ion-note>
-  
-            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-              <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
-                <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          </ion-list>
-  
-          <ion-list id="labels-list">
-            <ion-list-header>Labels</ion-list-header>
-  
-            jksdfi
-          </ion-list>
-        </ion-content>
-      </ion-menu>
-</ion-app>
-<div class="container-fluid">
-    <div class="row">
-        <div *ngIf="currentUser" class="col-12 col-md-4 col-lg-3 bg-dark p-0 m-0">
-            <app-sidebar [currentUser]="currentUser"></app-sidebar>
-        </div>
-        <div class="main-body-element p-3" [ngClass]="currentUser?'col-12 col-md-8 col-lg-9':'col-12'">
-            <app-alert></app-alert>
-            <router-outlet id="main-content"></router-outlet>
-        </div>
+      <ion-content>
+        <ion-list id="menu-list">
+          <ion-list-header>Hi, {{ this.currentUser.userInfo.firstname }}!</ion-list-header>
+          <ion-note>Your current Balance is ${{ this.currentUser.userInfo.balance | number: '.2-2' }}.</ion-note>
+
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none"
+              detail="false" [class.selected]="selectedIndex == i">
+              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+
+        <ion-list id="labels-list">
+          <ion-item lines="none" class="text-center text-muted">
+            <ion-label>Paylens<br>&copy; 2020 - 2020</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <div class="ion-page" id="main-content">
+      <ion-header [translucent]="true" class="sticky-top">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-title>{{ this.getPageTitle() }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <app-alert></app-alert>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <router-outlet></router-outlet>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
     </div>
-</div>
+  </ion-split-pane>
+</ion-app>
+
+<ng-template #guest>
+  <router-outlet></router-outlet>
+</ng-template>

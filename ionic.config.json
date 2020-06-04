@@ -1,5 +1,5 @@
 {
-  "name": "paylens",
+  "name": "paylens-client",
   "integrations": {
     "capacitor": {}
   },
