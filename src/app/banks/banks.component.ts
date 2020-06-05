@@ -12,7 +12,7 @@ declare var Plaid: any;
 })
 export class BanksComponent implements OnInit {
   _handler: any;
-  _accounts: [any];
+  _accounts: any[];
   withdraw: boolean = false;
   transfer: boolean = true;
   transferFundForm: any;

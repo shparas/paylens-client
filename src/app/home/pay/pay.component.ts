@@ -94,15 +94,15 @@ export class PayComponent implements OnInit {
         showFlipCameraButton: true,
         showTorchButton: true,
         prompt: 'Place the code inside the scan region',
-        resultDisplayDuration: 500,
+        resultDisplayDuration: 0,
         formats: 'QR_CODE,PDF_417',
-        orientation: 'portrait',
+        orientation: 'portrait'
       };
 
       this.barcodeScanner.scan(options).then(barcodeData => {
-        console.log('Barcode data', barcodeData);
+        this.openDialog(barcodeData.text);
       }).catch(err => {
-        console.log('Error', err);
+        this.alertService.error("Error: " + err);
       });
     }
   }
