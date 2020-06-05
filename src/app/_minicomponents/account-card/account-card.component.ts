@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogBoxComponent, AlertDialogBoxComponent } from '../';
@@ -11,6 +11,8 @@ import { AccountService, AlertService } from 'src/app/_services';
 })
 export class AccountCardComponent implements OnInit {
   @Input() account: any;
+  @Output() onDelete: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   public deleted = false;
   public loading = false;
 
@@ -56,6 +58,7 @@ export class AccountCardComponent implements OnInit {
               });
               alertDialogRef.afterClosed().subscribe(result => {
                 this.deleted = true;
+                this.onDelete.emit(true);
               });
             },
             error => {

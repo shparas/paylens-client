@@ -93,11 +93,10 @@ export class LoginRegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.register(this.registerForm.value)
+    this.authenticationService.register(this.registerForm.value)
       .pipe(first())
       .subscribe(
         data => {
-          this.alertService.success('Registration successful', true);
           this.router.navigate(['/home']);
         },
         error => {

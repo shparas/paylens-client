@@ -1,7 +1,7 @@
 <div class="shadow-lg bg-white rounded mx-auto card p-3">
   <h4>Please scan to pay:</h4>
 
-  <div [class.d-none]="!browserMode">
+  <div [class.d-none]="!browserMode" [class.hide]="!videoStart">
       <!-- Video -->
       <div class="video-row">
           <video class="video" id="video" #video autoplay playsinline></video>

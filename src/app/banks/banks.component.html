@@ -2,20 +2,26 @@
     <div class="row">
         <div class="col-12 col-md-10 col-lg-7 mx-auto">
             <div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
-                <h3>Available Accounts</h3>
-                <div class="card-deck">
-                    <app-account-card *ngFor="let account of _accounts" [account]="account">
-                    </app-account-card>
+                <div *ngIf="(!_accounts || _accounts.length == 0) else showAccounts">
+                    <h4>No accounts available. Please add one.</h4>
                 </div>
+                <ng-template #showAccounts>
+                    <h3>Available Accounts</h3>
+                    <div class="card-deck">
+                        <app-account-card *ngFor="let account of _accounts" [account]="account" (onDelete)="getAllAccounts()">
+                        </app-account-card>
+                    </div>
+                </ng-template>
+
                 <button class="btn btn-primary" (click)="addAccount()">Add Account</button>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div *ngIf="_accounts && _accounts.length > 0" class="row">
         <div class="col-12 col-md-10 col-lg-7 mx-auto">
             <div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
-                <h3>Transfer Funds</h3>
+                <h4>Transfer Funds</h4>
                 <ng-template [ngIf]="transfer">
                     <form [formGroup]="transferFundForm" (ngSubmit)="processPayment()">
                         <div class="custom-control custom-radio mb-2">
