@@ -15,7 +15,8 @@
     "capacitor-run": "ionic capacitor run android -l --host=0.0.0.0",
     "capacitor-run-prod": "ionic capacitor run android --prod -l --host=0.0.0.0",
     "capacitor-run-external": "ionic capacitor run android -l --external",
-    "capacitor-run-external-prod": "ionic capacitor run android -l --external --prod"
+    "capacitor-run-external-prod": "ionic capacitor run android -l --external --prod",
+    "fire": "firebase deploy --token \"1//0f_tkyEf4Cq58CgYIARAAGA8SNwF-L9IrU7224Qi2dFmj7qtXW5o1enkoad7kB9-MUqZ2lZFb9o8043tMy82OrrqvppEQhS_u7MU\""
   },
   "private": true,
   "dependencies": {
@@ -52,10 +53,11 @@
     "@angular/language-service": "~9.0.1",
     "@capacitor/cli": "2.1.1",
     "@ionic/angular-toolkit": "^2.1.1",
-    "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "firebase-tools": "^8.4.2",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",
