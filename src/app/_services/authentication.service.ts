@@ -48,4 +48,13 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }
+
+    update(newUserInfo: User){
+        return this.http.post<any>(`${environment.apiUrl}/user/update-user`, newUserInfo)
+            .pipe(map(user => {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                this.currentUserSubject.next(user);
+                return user;
+            }));
+    }
 }

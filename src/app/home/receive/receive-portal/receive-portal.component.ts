@@ -3,6 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { NFC, Ndef } from '@ionic-native/nfc/ngx';
+import { Platform } from '@ionic/angular';
 
 
 import { ValidationService, AuthenticationService, UserService, AlertService, PaymentService } from '../../../_services';
@@ -32,30 +34,38 @@ export class ReceivePortalComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private paymentService: PaymentService,
-    private formBuilder: FormBuilder
-  ) {
-    this.router.events.subscribe(() => {
-      this.id = this.route.snapshot.paramMap.get("id")
-      this.amount = 0;
-      $("#qr-show").empty();
-      $("#qr-show").qrcode(this.id);
-    });
-  }
+    private formBuilder: FormBuilder,
+    private nfc: NFC,
+    private ndef: Ndef,
+    private platform: Platform
+  ) { }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get("id");
-    $("#qr-show").qrcode(this.id);
+    this.id = this.route.snapshot.paramMap.get("id")
+    this.amount = 0;
+    $("#qr-show").ready(() => {
+      $("#qr-show").empty();
+      $("#qr-show").qrcode({ text: this.id });
+    });
+
     this.checkForPaymentUpdate();
     this.stopPolling = false;
-  }
- 
-  ngOnDestroy() {
-    this.stopPolling = true;
+
+    if (this.platform.is('android') && this.nfc.enabled) {
+      var message = [this.ndef.textRecord(this.id)];
+      this.nfc.share(message).then(data => data).catch(err => this.alertService.error(err));
+    }
   }
 
-  
+  ngOnDestroy() {
+    this.stopPolling = true;
+    if (this.platform.is('android') && this.nfc.enabled) {
+      this.nfc.unshare();
+    }
+  }
+
   sleep(seconds) {
-    return new Promise(resolve => setTimeout(resolve, seconds*1000))
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000))
   }
 
   checkForPaymentUpdate() {
@@ -64,11 +74,11 @@ export class ReceivePortalComponent implements OnInit {
       .subscribe(
         data => {
           console.log(data);
-          this.amount= parseFloat(data.amount);
+          this.amount = parseFloat(data.amount);
           if (data.paidBy && data.paidBy != '') {
             $("#qr-show").text(`${data.paidBy} paid you!`);
           } else {
-            if (!this.stopPolling){
+            if (!this.stopPolling) {
               this.sleep(5).then(() => {
                 this.checkForPaymentUpdate();
               });

@@ -41,7 +41,7 @@ export class LoginRegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      emailOrPhone: ['', [Validators.required, ValidationService.emailValidator]],
+      emailOrPhone: '', // ['', [Validators.required, ValidationService.emailValidator]],
       password: ''
     });
     this.registerForm = this.formBuilder.group({
@@ -53,9 +53,7 @@ export class LoginRegisterComponent implements OnInit {
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
   }
-
-  get lF() { return this.loginForm.controls; }
-
+  
   onLogin() {
     this.submitted = true;
 
@@ -68,19 +66,18 @@ export class LoginRegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.lF.emailOrPhone.value, this.lF.password.value)
+    this.authenticationService.login(this.loginForm.controls.emailOrPhone.value, this.loginForm.controls.password.value)
       .pipe(first())
       .subscribe(
         data => {
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          this.alertService.error(error);
+          this.alertService.error("Invalid email/phone or password");
           this.loading = false;
         });
   }
-
-  get rF() { return this.registerForm.controls; }
+  
   onRegister() {
     this.submitted = true;
 

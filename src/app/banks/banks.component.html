@@ -25,9 +25,9 @@
                 <ng-template [ngIf]="transfer">
                     <form [formGroup]="transferFundForm" (ngSubmit)="processPayment()">
                         <div class="custom-control custom-radio mb-2">
-                            <input type="radio" id="toSigmoidPay" name="withdraw" formControlName="withdraw"
+                            <input type="radio" id="toPaylens" name="withdraw" formControlName="withdraw"
                                 class="custom-control-input" value="false">
-                            <label class="custom-control-label" for="toSigmoidPay">Transfer to Sigmoid Pay</label>
+                            <label class="custom-control-label" for="toPaylens">Transfer to Paylens</label>
                         </div>
                         <div class="custom-control custom-radio mb-2">
                             <input type="radio" id="toBankAcc" name="withdraw" formControlName="withdraw"

@@ -1,1 +1,37 @@
-<p>"Settings" works! Coming out soon!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+            <div class="shadow-lg bg-white p-3 m-3 rounded mx-auto">
+                <form [formGroup]="updateSettingsForm" (ngSubmit)="onUpdate()">
+                    <ion-item>
+                        <ion-label position="floating">First Name</ion-label>
+                        <ion-input formControlName="firstname" name="firstname" autofocus></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">Last Name</ion-label>
+                        <ion-input formControlName="lastname" name="lastname"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">Phone</ion-label>
+                        <ion-input formControlName="phone" name="phone"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">Email</ion-label>
+                        <ion-input formControlName="email" name="email"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">Old Password</ion-label>
+                        <ion-input type="password" formControlName="oldPassword" name="password"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">New Password</ion-label>
+                        <ion-input type="password" formControlName="newPassword" name="password"></ion-input>
+                    </ion-item>
+                    <div class="pt-2">
+                        <button class="form-control btn btn-primary" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

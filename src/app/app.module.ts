@@ -32,9 +32,11 @@ import { Platform, IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { PayPortalComponent } from './home/pay/pay-portal/pay-portal.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { AppRoutingModule } from './app-routing.module';
     SettingsComponent,
     HomeComponent,
     PayComponent,
+    PayPortalComponent,
     ReceiveComponent,
     ReceivePortalComponent,
     ConfirmationDialogBoxComponent,
@@ -74,6 +77,8 @@ import { AppRoutingModule } from './app-routing.module';
     StatusBar,
     SplashScreen,
     BarcodeScanner,
+    NFC,
+    Ndef,
     Platform,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

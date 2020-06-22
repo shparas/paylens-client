@@ -19,15 +19,15 @@ export class ActivitiesLogComponent implements OnInit {
       url: 'paid',
       icon: 'card'
     },
-    {
-      title: 'Pending',
-      url: 'pending',
-      icon: 'cash',
-      badge: {
-        color: 'danger',
-        text: '?' 
-      }
-    },
+    // {
+    //   title: 'Pending',
+    //   url: 'pending',
+    //   icon: 'cash',
+    //   badge: {
+    //     color: 'danger',
+    //     text: '?' 
+    //   }
+    // },
     {
       title: 'Received',
       url: 'received',

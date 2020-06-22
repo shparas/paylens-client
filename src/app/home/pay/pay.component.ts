@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Inject, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FormBuilder, Validators } from '@angular/forms';
@@ -11,6 +11,7 @@ import { ValidationService, AuthenticationService, UserService, AlertService, Pa
 import jsQR, { QRCode } from 'jsqr';
 import { ConfirmationDialogBoxComponent, AlertDialogBoxComponent } from '../../_minicomponents';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
+import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 import { Platform } from '@ionic/angular';
 
 declare var $: any;
@@ -20,7 +21,7 @@ declare var $: any;
   templateUrl: './pay.component.html',
   styleUrls: ['./pay.component.scss']
 })
-export class PayComponent implements OnInit {
+export class PayComponent implements OnInit, OnDestroy {
   @ViewChild('video', { static: true }) videoElm: ElementRef;
   @ViewChild('canvas', { static: true }) canvasElm: ElementRef;
 
@@ -52,7 +53,7 @@ export class PayComponent implements OnInit {
     private paymentService: PaymentService,
     private formBuilder: FormBuilder,
     private barcodeScanner: BarcodeScanner,
-    public platform: Platform
+    public platform: Platform,
   ) {
     this.router.events.subscribe(() => { });
 
@@ -71,6 +72,9 @@ export class PayComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+  }
+
   get pF() { return this.makePaymentForm.controls; }
   onSubmit() {
     this.submitted = true;
@@ -83,7 +87,7 @@ export class PayComponent implements OnInit {
       return;
     }
 
-    this.openDialog(this.pF.id.value);
+    this.router.navigate([this.pF.id.value], { relativeTo: this.route });
   }
 
   toggleVideoMedia() {
@@ -100,7 +104,7 @@ export class PayComponent implements OnInit {
       };
 
       this.barcodeScanner.scan(options).then(barcodeData => {
-        this.openDialog(barcodeData.text);
+        this.router.navigate([barcodeData.text], { relativeTo: this.route });
       }).catch(err => {
         this.alertService.error("Error: " + err);
       });
@@ -143,61 +147,18 @@ export class PayComponent implements OnInit {
     const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" })
 
     if (code) {
-      this.openDialog(code.data);
+      this.payId(code.data);
     } else {
-      setTimeout(() => { this.checkImage(); }, 100)
+      setTimeout(() => { this.checkImage(); }, 100);
     }
   }
-
-  openDialog(transactionId: string): void {
-    var tempVideoStartValue = this.videoStart;
-    this.loading = true;
-
-    if (tempVideoStartValue) {
+ 
+  payId(transactionId: string): void {
+    if (this.videoStart){
       this.stopVideo();
     }
 
-    this.paymentService.getPaymentDetail(transactionId).subscribe(
-      data => {
-        const confirmationDialogRef = this.confirmationDialog.open(ConfirmationDialogBoxComponent, {
-          width: '360px',
-          data: {
-            displayPrompt: `You're about to pay $${data.amount} to ${data.createdBy}. Confirm payment?`
-          }
-        });
-
-        confirmationDialogRef.afterClosed().subscribe(result => {
-          if (result.confirm == true) {
-            this.paymentService.makePayment(transactionId)
-              .pipe(first())
-              .subscribe(
-                data => {
-                  const alertDialogRef = this.alertDialog.open(AlertDialogBoxComponent, {
-                    width: '360px',
-                    data: {
-                      displayPrompt: "Success!"
-                    }
-                  });
-                  alertDialogRef.afterClosed().subscribe(result => {
-                    this.router.navigate(['..'], { relativeTo: this.route });
-                  });
-                },
-                error => {
-                  this.alertService.error(error);
-                  this.loading = false;
-                });
-          } else {
-            this.loading = false;
-            if (tempVideoStartValue) {
-              this.startVideo();
-            }
-          }
-        });
-      },
-      error => {
-        this.alertService.error(error);
-        this.loading = false;
-      });
+    this.router.navigate([transactionId], {relativeTo: this.route});
   };
 }
 

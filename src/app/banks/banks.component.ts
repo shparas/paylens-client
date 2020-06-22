@@ -39,7 +39,7 @@ export class BanksComponent implements OnInit {
 
   plaidHanderCreator(): any {
     return Plaid.create({
-      clientName: 'Sigmoid Pay',
+      clientName: 'Paylens',
       countryCodes: ['US'],
       env: 'sandbox',
       key: '066eab548902d1532836b65fa0c7be',

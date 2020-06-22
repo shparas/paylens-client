@@ -15,6 +15,7 @@ import { PendingComponent } from './activities-log/pending/pending.component';
 import { ReceivedComponent } from './activities-log/received/received.component';
 import { TransferredComponent } from './activities-log/transferred/transferred.component';
 import { PayComponent } from './home/pay/pay.component';
+import { PayPortalComponent } from './home/pay/pay-portal/pay-portal.component';
 
 const routes: Routes = [
   { path: '', component: LoginRegisterComponent },
@@ -33,26 +34,23 @@ const routes: Routes = [
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children:
       [
         { path: '', redirectTo: 'pay', pathMatch: 'full' },
-        { path: 'pay', component: PayComponent },
+        {
+          path: 'pay', component: PayComponent, children:
+            [
+              { path: ':id', component: PayPortalComponent }
+            ]
+        },
         {
           path: 'receive', component: ReceiveComponent, children:
             [
               { path: ':id', component: ReceivePortalComponent }
             ]
-        }      ]
+        }]
   },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'log-out', component: LoginRegisterComponent, canActivate: [AuthGuard] }
 
-  // {
-  //   path: '',
-  //   redirectTo: 'folder/Inbox',
-  //   pathMatch: 'full'
-  // },
-  // {
-  //   path: 'folder/:id',
-  //   loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  // }
+  // loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
 ];
 
 @NgModule({

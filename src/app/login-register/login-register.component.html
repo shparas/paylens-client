@@ -22,10 +22,13 @@
             </ion-item>
             <ion-item>
                 <ion-label position="floating">Password</ion-label>
-                <ion-input type="password" formControlName="password"></ion-input>
+                <ion-input type="password" formControlName="password" autoComplete></ion-input>
                 <app-form-control-message class="invalid-feedback" [control]="loginForm.get('password')">
                 </app-form-control-message>
             </ion-item>
+            <div class="pt-3 text-left">
+                <button class="btn btn-link">Forgot Password</button>
+            </div>
             <div class="pt-2">
                 <button class="form-control btn btn-primary" type="submit" [disabled]="!loginForm.valid">Login</button>
             </div>
